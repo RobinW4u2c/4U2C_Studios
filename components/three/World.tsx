@@ -19,7 +19,6 @@ import Particles from './Particles';
 import FloatingPhoto from './FloatingPhoto';
 import VideoScreen from './VideoScreen';
 import SonyCamera from './SonyCamera';
-import LensDiaphragm from './LensDiaphragm';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useMouse } from '@/hooks/useMouse';
 import { HERO_PHOTOS, VIDEOS } from '@/lib/data';
@@ -76,11 +75,6 @@ export default function World({ isMobile }: WorldProps) {
       <Suspense fallback={null}>
         <SonyCamera getProgress={getProgress} mouse={mouse} />
       </Suspense>
-      {!isMobile && (
-        <Suspense fallback={null}>
-          <LensDiaphragm getProgress={getProgress} mouse={mouse} />
-        </Suspense>
-      )}
 
       {/* schwebende Fotos */}
       <Suspense fallback={null}>
