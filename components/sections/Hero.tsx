@@ -55,35 +55,34 @@ export default function Hero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="hero-fade text-veil pointer-events-none flex flex-col items-center px-6 text-center"
+        className="hero-fade pointer-events-none flex flex-col items-center px-6 text-center"
       >
         <motion.span
           variants={item}
-          className="readable mb-8 font-mono text-[11px] uppercase tracking-widest2 text-accent md:text-xs"
+          className="mb-6 font-mono text-xs uppercase tracking-widest2 text-accent"
         >
           {SITE.role} · {SITE.location}
         </motion.span>
 
         <motion.h1
           variants={item}
-          className="readable font-display text-[15vw] font-extrabold leading-[0.82] tracking-tightest text-bone md:text-[9.5vw]"
+          className="font-display text-[14vw] font-extrabold leading-[0.85] tracking-tightest text-bone md:text-[9vw]"
         >
           <SplitText text="CINEMATIC" by="char" delay={2.7} stagger={0.04} />
         </motion.h1>
         <motion.h1
           variants={item}
-          className="readable font-display text-[15vw] font-extrabold leading-[0.82] tracking-tightest text-accent md:text-[9.5vw]"
+          className="font-display text-[14vw] font-extrabold leading-[0.85] tracking-tightest text-accent md:text-[9vw]"
         >
           <SplitText text="STORIES" by="char" delay={3.0} stagger={0.04} />
         </motion.h1>
 
         <motion.p
           variants={item}
-          className="readable mt-10 max-w-lg font-body text-base leading-relaxed text-bone/85 md:text-lg"
+          className="mt-8 max-w-md font-body text-sm leading-relaxed text-smoke md:text-base"
         >
-          Premium Fotografie &amp; Videografie von {SITE.owner}.
-          <br className="hidden md:block" />
-          Wir erzählen deine Geschichte in Licht, Komposition und Emotion.
+          {SITE.tagline} — Fotografie & Videografie von {SITE.owner}.
+          Licht, Komposition, Emotion.
         </motion.p>
       </motion.div>
 
@@ -94,7 +93,7 @@ export default function Hero() {
         transition={{ delay: 3.4, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
-        <span className="readable font-mono text-[10px] uppercase tracking-widest2 text-bone/70">
+        <span className="font-mono text-[10px] uppercase tracking-widest2 text-smoke">
           Scroll
         </span>
         <div className="mx-auto mt-3 h-10 w-px overflow-hidden bg-ash">

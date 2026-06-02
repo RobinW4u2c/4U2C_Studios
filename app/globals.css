@@ -1,6 +1,7 @@
 /* ============================================================
-   GLOBAL STYLES v2 – 4U2C STUDIOS
-   Mutig, modern, editorial. Klare Flächen, harte Kontraste.
+   GLOBAL STYLES – 4U2C STUDIOS
+   Fonts via Google Fonts (siehe layout.tsx next/font), hier
+   Basis-Reset, CSS-Variablen und wiederkehrende Utility-Klassen.
    ============================================================ */
 
 @tailwind base;
@@ -8,66 +9,98 @@
 @tailwind utilities;
 
 :root {
-  --void: #050505;
-  --coal: #0e0e0e;
-  --line: #262626;
-  --mute: #7d7d7d;
-  --chalk: #f5f5f0;
-  --volt: #d6ff3f;
+  /* Farb-Variablen (für Stellen, die kein Tailwind nutzen, z.B. Cursor) */
+  --ink: #0a0a0c;
+  --carbon: #121216;
+  --ash: #1c1c22;
+  --smoke: #8a8a93;
+  --bone: #ece8e1;
+  --accent: #c8a96a;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html {
+  /* native Smooth-Scroll AUS – wir nutzen Lenis */
   scroll-behavior: auto;
-  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  background-color: var(--void);
-  color: var(--chalk);
+  background-color: var(--ink);
+  color: var(--bone);
   font-family: var(--font-body), sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  /* Custom Cursor: Standard-Cursor ausblenden auf Desktop */
 }
 
-/* Custom Cursor nur auf Desktop */
 @media (hover: hover) and (pointer: fine) {
-  body, a, button { cursor: none; }
+  body {
+    cursor: none;
+  }
+  a, button {
+    cursor: none;
+  }
 }
 
-::selection { background: var(--volt); color: var(--void); }
+/* Scrollbar dezent stylen */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ash);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
 
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--void); }
-::-webkit-scrollbar-thumb { background: var(--line); }
-::-webkit-scrollbar-thumb:hover { background: var(--volt); }
+/* Text-Selektion */
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
 
+/* ----- Keyframes für die driftende Bilderwand ----- */
+@keyframes driftUp {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-33.33%); } /* eine der 3 Kopien durchlaufen = nahtlos */
+}
+@keyframes driftDown {
+  0%   { transform: translateY(-33.33%); }
+  100% { transform: translateY(0); }
+}
+
+/* ----- Wiederkehrende Komponenten-Klassen ----- */
 @layer components {
-  /* Eingabefeld – klare Linie */
-  .field {
-    @apply w-full border-0 border-b-2 border-line bg-transparent py-4 font-body text-lg text-chalk
-           placeholder:text-mute/60 outline-none transition-colors duration-300 focus:border-volt;
-  }
-  select.field { @apply cursor-pointer; }
-
-  /* großer Akzent-Button */
-  .btn-volt {
-    @apply inline-flex items-center justify-center bg-volt px-8 py-4 font-mono text-sm font-semibold
-           uppercase tracking-widest2 text-void transition-all duration-300 ease-snap
-           hover:bg-chalk;
+  /* Einheitliches Eingabefeld-Styling (Kontaktformular) */
+  .cine-input {
+    @apply w-full border-b border-ash bg-transparent py-3 font-body text-bone
+           placeholder:text-smoke/50 outline-none transition-colors duration-300
+           focus:border-accent;
   }
 
-  /* Sektions-Nummer / Eyebrow */
-  .tag {
-    @apply font-mono text-xs uppercase tracking-widest2 text-volt;
+  select.cine-input {
+    @apply cursor-pointer;
   }
 
-  /* Outline-Text-Effekt für große Headlines (modern) */
-  .outline-text {
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--chalk);
+  /* Matter Look mit leuchtender Gold-Kontur (für Cards/Buttons) */
+  .glow-border {
+    position: relative;
+    border: 1px solid rgba(200, 169, 106, 0.18);
+    box-shadow: 0 0 0 1px rgba(200, 169, 106, 0.04), 0 8px 40px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 0.5s ease;
+  }
+  .glow-border:hover {
+    border-color: rgba(200, 169, 106, 0.55);
+    box-shadow: 0 0 24px rgba(200, 169, 106, 0.18), 0 8px 50px rgba(0, 0, 0, 0.6);
   }
 }

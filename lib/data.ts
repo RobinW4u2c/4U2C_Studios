@@ -113,5 +113,5 @@ export const ABOUT = {
 };
 
 // --- KONTAKTFORMULAR OPTIONEN --------------------------------
-export const PROJECT_TYPES = ['Fotografie', 'Videografie', 'Foto & Videografie (Kombipaket)'];
-export const BUDGET_RANGES = ['Unter 500 €', '500 – 2.000 €', '2.000 – 5.000 €', '5.000 – 10.000 €', '10.000 € +'];
+export const PROJECT_TYPES = ['Fotografie', 'Videografie', 'Brand Film', 'Hochzeit', 'Event', 'Sonstiges'];
+export const BUDGET_RANGES = ['< 2.000 €', '2.000 – 5.000 €', '5.000 – 10.000 €', '10.000 € +'];

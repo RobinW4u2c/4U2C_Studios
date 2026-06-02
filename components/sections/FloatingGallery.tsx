@@ -21,40 +21,15 @@ export default function FloatingGallery() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1) Cinematic Reveal: Karten enthüllen sich via Clip-Path + Scale
+    // 1) Scroll-Reveal der Karten
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>('.gal-card').forEach((card, i) => {
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            y: 90,
-            scale: 0.92,
-            clipPath: 'inset(12% 12% 12% 12% round 4px)',
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            clipPath: 'inset(0% 0% 0% 0% round 4px)',
-            duration: 1.3,
-            ease: 'power3.out',
-            delay: (i % 3) * 0.1,
-            scrollTrigger: { trigger: card, start: 'top 88%' },
-          }
-        );
-
-        // 2) Scroll-basierte Tiefen-Parallax je Karte (Depth Layers)
-        gsap.to(card, {
-          yPercent: -8 - (i % 3) * 6,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        });
+      gsap.from('.gal-card', {
+        opacity: 0,
+        y: 80,
+        duration: 1.1,
+        ease: 'power3.out',
+        stagger: 0.12,
+        scrollTrigger: { trigger: section.current, start: 'top 70%' },
       });
     }, section);
 
@@ -93,17 +68,17 @@ export default function FloatingGallery() {
     <section
       ref={section}
       id="work"
-      className="relative z-10 mx-auto min-h-screen max-w-[1600px] px-6 py-40 md:px-12"
+      className="relative z-10 mx-auto min-h-screen max-w-[1600px] px-6 py-32 md:px-12"
     >
       {/* Section Header */}
       <div className="mb-20 flex items-end justify-between">
         <div>
           <span className="font-mono text-xs uppercase tracking-widest2 text-accent">01 — Work</span>
-          <h2 className="readable mt-4 font-display text-5xl font-bold tracking-tightest text-bone md:text-7xl">
+          <h2 className="mt-4 font-display text-5xl tracking-tightest text-bone md:text-7xl">
             Selected Frames
           </h2>
         </div>
-        <span className="readable hidden font-mono text-xs text-bone/60 md:block">
+        <span className="hidden font-mono text-xs text-smoke md:block">
           Move your cursor — the gallery responds.
         </span>
       </div>
@@ -142,33 +117,24 @@ function GalleryCard({
       data-cursor="hover"
       style={{ marginTop: index % 2 === 1 ? '3rem' : '0' }}
     >
-      {/* Bild oder eleganter Platzhalter – mit Ken-Burns Slow-Zoom */}
+      {/* Bild oder eleganter Platzhalter */}
       {!error ? (
-        <div className="h-full w-full overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt={title}
-            loading="lazy"
-            onLoad={() => setLoaded(true)}
-            onError={() => setError(true)}
-            className={`h-full w-full object-cover transition-opacity duration-1000 ease-cine group-hover:[animation-play-state:paused] ${
-              loaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              // Ken-Burns: extrem langsamer, gemächlicher Zoom/Pan
-              animation: `kenburns${index % 3} ${22 + (index % 3) * 4}s ease-in-out infinite alternate`,
-            }}
-          />
-        </div>
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={title}
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          onError={() => setError(true)}
+          className={`h-full w-full object-cover transition-all duration-700 ease-cine group-hover:scale-105 ${
+            loaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-ash to-carbon">
           <span className="font-display text-2xl tracking-tightest text-smoke/40">{title}</span>
         </div>
       )}
-
-      {/* cinematic Glow-Sweep beim Hover (Lichtreflexion statt Lens Flare) */}
-      <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accentSoft/15 to-transparent transition-transform duration-1000 ease-cine group-hover:translate-x-full" />
 
       {/* Overlay-Infos */}
       <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-ink/90 to-transparent p-5 opacity-0 transition-opacity duration-500 group-hover:opacity-100">

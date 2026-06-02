@@ -45,13 +45,13 @@ export default function VideoShowcase() {
     <section
       ref={section}
       id="showcase"
-      className="relative z-10 mx-auto max-w-[1600px] px-6 py-40 md:px-12"
+      className="relative z-10 mx-auto max-w-[1600px] px-6 py-32 md:px-12"
     >
       <div className="mb-20">
         <span className="font-mono text-xs uppercase tracking-widest2 text-accent">
           03 — Showreel
         </span>
-        <h2 className="readable mt-4 font-display text-5xl font-bold tracking-tightest text-bone md:text-7xl">
+        <h2 className="mt-4 font-display text-5xl tracking-tightest text-bone md:text-7xl">
           Motion Work
         </h2>
       </div>

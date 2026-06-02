@@ -14,14 +14,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Basis Cinematic Dunkel-Palette (lesbarer, premium)
-        ink: '#08080b',
-        carbon: '#101015',
-        ash: '#20202a',
-        smoke: '#a8a8b2',
-        bone: '#f4f1ea',
-        accent: '#d4b074',
-        accentSoft: '#ecd9ad',
+        // Basis Cinematic Dunkel-Palette
+        ink: '#0a0a0c',        // tiefes Schwarz (Hintergrund)
+        carbon: '#121216',     // leicht aufgehellt (Cards)
+        ash: '#1c1c22',        // Borders / Surfaces
+        smoke: '#8a8a93',      // sekundärer Text
+        bone: '#ece8e1',       // primärer Text (warm-weiß)
+        accent: '#c8a96a',     // Gold/Bronze Akzent (Brand) – HIER ändern für andere Brandfarbe
+        accentSoft: '#e3d3ad',
       },
       fontFamily: {
         // Display Font (Headlines) & Body Font – in globals.css geladen

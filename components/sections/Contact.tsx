@@ -12,7 +12,6 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { SITE, PROJECT_TYPES, BUDGET_RANGES } from '@/lib/data';
-import FinaleBackground from '@/components/ui/FinaleBackground';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
@@ -85,11 +84,10 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative z-10 overflow-hidden py-40">
-      {/* SPEKTAKULÄRES FINALE: Light Tunnel hinter der Section (full-bleed) */}
-      <FinaleBackground />
-
-      <div className="relative mx-auto max-w-[1100px] px-6 md:px-12">
+    <section
+      id="contact"
+      className="relative z-10 mx-auto max-w-[1100px] px-6 py-32 md:px-12"
+    >
       <motion.div
         ref={formRef}
         initial={{ opacity: 0, y: 60 }}
@@ -101,7 +99,7 @@ export default function Contact() {
           <span className="font-mono text-xs uppercase tracking-widest2 text-accent">
             05 — Contact
           </span>
-          <h2 className="readable mt-4 font-display text-5xl font-bold tracking-tightest text-bone md:text-7xl">
+          <h2 className="mt-4 font-display text-5xl tracking-tightest text-bone md:text-7xl">
             Let&apos;s create
           </h2>
           <p className="mt-6 font-body text-smoke">
@@ -111,8 +109,8 @@ export default function Contact() {
 
         {/* Erfolgsmeldung */}
         {status === 'success' ? (
-          <div className="border-y border-accent/30 py-16 text-center">
-            <h3 className="font-display text-4xl text-bone">Danke!</h3>
+          <div className="rounded-sm border border-accent/40 bg-carbon p-12 text-center">
+            <h3 className="font-display text-3xl text-bone">Danke!</h3>
             <p className="mt-4 font-body text-smoke">
               Deine Nachricht ist angekommen. Ich melde mich in Kürze.
             </p>
@@ -204,7 +202,6 @@ export default function Contact() {
           </div>
         )}
       </motion.div>
-      </div>
     </section>
   );
 }
