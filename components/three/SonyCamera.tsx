@@ -1,14 +1,14 @@
 'use client';
 
 // ============================================================
-//  SONY ALPHA – echtes 3D-Modell (GLB), scroll-gesteuert
-//  KEINE Automatik, KEIN Blitz. Alles folgt dem Scroll:
-//    - runter scrollen -> Modell bewegt/dreht sich vorwärts
-//    - hoch scrollen    -> exakt reverse (gleiche Kurve rückwärts)
-//  Da die Position direkt an den Scroll-Fortschritt (0..1)
-//  gebunden ist, ergibt sich "reverse" automatisch beim Hochscrollen.
+//  SONY ALPHA – echtes 3D-Modell (GLB)
+//  Reagiert auf SCROLL + MAUS, elegant schwebend & rotierend.
+//  KEINE Automatik-Blitze. Hochwertige Beleuchtung kommt aus
+//  World.tsx (Environment + Spotlights).
 //
-//  Modell: /public/models/sony_alpha.glb (Draco/meshopt-komprimiert)
+//  - Scroll: dreht & bewegt das Modell durch die Tiefe
+//  - Maus:   sanftes Neigen Richtung Cursor (lebendig, edel)
+//  - Idle:   minimales Schweben (Floating Motion)
 // ============================================================
 
 import { useRef } from 'react';
@@ -17,40 +17,46 @@ import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface SonyCameraProps {
-  // liefert geglätteten Scroll-Fortschritt 0..1
-  getProgress: () => number;
+  getProgress: () => number;          // Scroll 0..1
+  mouse: React.MutableRefObject<{ x: number; y: number }>;
 }
 
-export default function SonyCamera({ getProgress }: SonyCameraProps) {
+export default function SonyCamera({ getProgress, mouse }: SonyCameraProps) {
   const group = useRef<THREE.Group>(null);
   const smooth = useRef(0);
+  const mx = useRef(0);
+  const my = useRef(0);
 
-  // GLB laden. 2. Arg = Draco (false), 3. Arg = meshOpt (true).
-  // drei lädt den Meshopt-Decoder automatisch.
   const { scene } = useGLTF('/models/sony_alpha.glb', false, true);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (!group.current) return;
 
-    // Scroll-Fortschritt sanft folgen
+    // Scroll sanft folgen
     const p = getProgress();
     smooth.current += (p - smooth.current) * 0.08;
     const t = smooth.current;
 
-    // ---- BEWEGUNG komplett an t (0..1) gebunden ----
-    // dreht sich um die eigene Achse, während man scrollt
-    group.current.rotation.y = t * Math.PI * 2.2;          // gut 2 Umdrehungen über die Seite
-    group.current.rotation.x = Math.sin(t * Math.PI) * 0.25;
-    group.current.rotation.z = Math.sin(t * Math.PI * 2) * 0.08;
+    // Maus sanft folgen (Parallax-Neigung)
+    mx.current = THREE.MathUtils.lerp(mx.current, mouse.current.x, 0.06);
+    my.current = THREE.MathUtils.lerp(my.current, mouse.current.y, 0.06);
 
-    // schwebt leicht nach unten + zurück in die Tiefe beim Scrollen
-    group.current.position.y = THREE.MathUtils.lerp(0.4, -0.6, t) + Math.sin(t * Math.PI * 3) * 0.06;
-    group.current.position.z = THREE.MathUtils.lerp(-1.5, -4.5, t);
-    group.current.position.x = Math.sin(t * Math.PI) * 0.6;
+    const time = state.clock.elapsedTime;
 
-    // beim Scrollen leicht größer -> kleiner (Atmen)
-    const s = THREE.MathUtils.lerp(1.0, 0.78, t);
-    group.current.scale.setScalar(s * BASE_SCALE);
+    // ---- ROTATION: Scroll-getrieben + Maus-Neigung + Idle-Schweben ----
+    group.current.rotation.y = t * Math.PI * 2.0 + mx.current * 0.4 + Math.sin(time * 0.2) * 0.05;
+    group.current.rotation.x = Math.sin(t * Math.PI) * 0.2 - my.current * 0.25;
+    group.current.rotation.z = Math.sin(time * 0.3) * 0.03;
+
+    // ---- POSITION: Scroll schiebt in die Tiefe, Idle-Schweben ----
+    group.current.position.y =
+      THREE.MathUtils.lerp(0.3, -0.7, t) + Math.sin(time * 0.6) * 0.08;
+    group.current.position.z = THREE.MathUtils.lerp(-1.0, -4.0, t);
+    group.current.position.x = Math.sin(t * Math.PI) * 0.5 + mx.current * 0.3;
+
+    // dezentes "Atmen" der Größe beim Scrollen
+    const s = THREE.MathUtils.lerp(1.0, 0.8, t) * BASE_SCALE;
+    group.current.scale.setScalar(s);
   });
 
   return (
@@ -60,8 +66,7 @@ export default function SonyCamera({ getProgress }: SonyCameraProps) {
   );
 }
 
-// Grund-Skalierung des Modells (anpassen, falls Kamera zu groß/klein)
+// Grund-Skalierung (anpassen falls Kamera zu groß/klein erscheint)
 const BASE_SCALE = 2.2;
 
-// Vorladen für schnelleren ersten Frame
 useGLTF.preload('/models/sony_alpha.glb');

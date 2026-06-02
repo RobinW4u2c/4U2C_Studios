@@ -76,6 +76,28 @@ body {
 @keyframes driftDown {
   0%   { transform: translateY(-33.33%); }
   100% { transform: translateY(0); }
+
+/* ----- Light Sweep Pulsieren (cinematic Hintergrund) ----- */
+@keyframes sweepPulse {
+  0%, 100% { opacity: 0.03; }
+  50%      { opacity: 0.10; }
+
+/* ----- Ken-Burns Slow-Zoom Varianten (Galerie) ----- */
+@keyframes kenburns0 {
+  0%   { transform: scale(1.0) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-2%, -2%); }
+}
+@keyframes kenburns1 {
+  0%   { transform: scale(1.08) translate(1%, -1%); }
+  100% { transform: scale(1.0) translate(0, 0); }
+}
+@keyframes kenburns2 {
+  0%   { transform: scale(1.0) translate(0, 1%); }
+  100% { transform: scale(1.14) translate(2%, -2%); }
+}
+
+}
+
 }
 
 /* ----- Wiederkehrende Komponenten-Klassen ----- */

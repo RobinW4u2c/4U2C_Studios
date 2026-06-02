@@ -16,7 +16,7 @@ import Navbar from '@/components/ui/Navbar';
 import Cursor from '@/components/ui/Cursor';
 import Grain from '@/components/ui/Grain';
 import ScrollProgress from '@/components/ui/ScrollProgress';
-import PhotoWall from '@/components/ui/PhotoWall';
+import CinematicBackground from '@/components/ui/CinematicBackground';
 
 import Hero from '@/components/sections/Hero';
 import FloatingGallery from '@/components/sections/FloatingGallery';
@@ -44,8 +44,8 @@ export default function Page() {
       <ScrollProgress />
       <Navbar />
 
-      {/* Driftende Bilderwand ganz hinten (z-1) */}
-      <PhotoWall />
+      {/* Cinematic Atmosphäre-Hintergrund (z-1) */}
+      <CinematicBackground />
 
       {/* 3D-Welt darüber (fixed, z-0 -> wir heben auf z-[2]) */}
       <Scene />
