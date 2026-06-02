@@ -17,7 +17,7 @@ import Particles from './Particles';
 import FloatingPhoto from './FloatingPhoto';
 import VideoScreen from './VideoScreen';
 import FlyingCamera from './FlyingCamera';
-import { triggerShutterFlash } from '@/components/ui/ShutterFlash';
+import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { HERO_PHOTOS, VIDEOS } from '@/lib/data';
 
 interface WorldProps {
@@ -25,6 +25,9 @@ interface WorldProps {
 }
 
 export default function World({ isMobile }: WorldProps) {
+  // Scroll-Richtung + Fortschritt für die fliegende Kamera
+  const getScroll = useScrollDirection();
+
   return (
     <>
       {/* Nebel: blendet die Tiefe ins Dunkle aus. Kein opaker
@@ -37,12 +40,12 @@ export default function World({ isMobile }: WorldProps) {
       {/* Licht & Strahlen */}
       <LightBeams />
 
-      {/* Partikel – auf Mobile reduzierte Anzahl für Performance */}
-      <Particles count={isMobile ? 400 : 1400} color="#c8a96a" />
+      {/* Partikel – dezenter für cleanen Look */}
+      <Particles count={isMobile ? 300 : 800} color="#c8a96a" />
 
-      {/* FLIEGENDE KAMERA (Sony Alpha) – löst beim Vorbeiflug den Blitz aus.
-          Auf Mobile aus Performance-Gründen weggelassen. */}
-      {!isMobile && <FlyingCamera onFlash={triggerShutterFlash} />}
+      {/* FLIEGENDE KAMERA (Sony Alpha) – scroll-gesteuert.
+          Runter = vorwärts + Blitz, Hoch = reverse. Mobile: aus. */}
+      {!isMobile && <FlyingCamera getScroll={getScroll} />}
 
       {/* Schwebende Fotos (lädt Texturen; Suspense fängt Ladezeit ab) */}
       <Suspense fallback={null}>
@@ -71,23 +74,23 @@ export default function World({ isMobile }: WorldProps) {
         </EffectComposer>
       ) : (
         <EffectComposer multisampling={4}>
-          {/* Tiefenunschärfe: fokussiert Mitte, blurrt vorne/hinten */}
+          {/* Tiefenunschärfe: fokussiert Mitte, blurrt vorne/hinten (dezenter) */}
           <DepthOfField
-            focusDistance={0.012}
-            focalLength={0.04}
-            bokehScale={3.5}
+            focusDistance={0.015}
+            focalLength={0.05}
+            bokehScale={2.5}
             height={480}
           />
-          {/* Bloom: lässt Lichter glühen (cinematic) */}
+          {/* Bloom: nur die leuchtenden Konturen glühen lassen (cleaner) */}
           <Bloom
-            intensity={0.9}
-            luminanceThreshold={0.25}
-            luminanceSmoothing={0.9}
+            intensity={0.7}
+            luminanceThreshold={0.45}
+            luminanceSmoothing={0.95}
             mipmapBlur
           />
-          {/* leichtes Filmkorn */}
-          <Noise opacity={0.035} premultiply blendFunction={BlendFunction.ADD} />
-          <Vignette eskil={false} offset={0.18} darkness={0.95} />
+          {/* sehr feines Filmkorn (matter, ruhiger Look) */}
+          <Noise opacity={0.022} premultiply blendFunction={BlendFunction.ADD} />
+          <Vignette eskil={false} offset={0.22} darkness={0.92} />
         </EffectComposer>
       )}
     </>

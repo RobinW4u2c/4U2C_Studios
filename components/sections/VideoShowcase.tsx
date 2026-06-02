@@ -139,7 +139,7 @@ function VideoCard({
 
   return (
     <div
-      className="vid-card group relative aspect-video cursor-pointer overflow-hidden rounded-sm bg-carbon"
+      className="vid-card glow-border group relative aspect-video cursor-pointer overflow-hidden rounded-sm bg-carbon"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onClick={onOpen}

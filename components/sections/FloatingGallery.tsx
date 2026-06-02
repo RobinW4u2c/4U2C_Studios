@@ -112,7 +112,7 @@ function GalleryCard({
 
   return (
     <figure
-      className="gal-card group relative aspect-[4/5] overflow-hidden rounded-sm bg-carbon"
+      className="gal-card glow-border group relative aspect-[4/5] overflow-hidden rounded-sm bg-carbon"
       data-depth={depth}
       data-cursor="hover"
       style={{ marginTop: index % 2 === 1 ? '3rem' : '0' }}

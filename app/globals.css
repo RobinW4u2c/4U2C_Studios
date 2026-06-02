@@ -90,4 +90,17 @@ body {
   select.cine-input {
     @apply cursor-pointer;
   }
+
+  /* Matter Look mit leuchtender Gold-Kontur (für Cards/Buttons) */
+  .glow-border {
+    position: relative;
+    border: 1px solid rgba(200, 169, 106, 0.18);
+    box-shadow: 0 0 0 1px rgba(200, 169, 106, 0.04), 0 8px 40px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 0.5s ease;
+  }
+  .glow-border:hover {
+    border-color: rgba(200, 169, 106, 0.55);
+    box-shadow: 0 0 24px rgba(200, 169, 106, 0.18), 0 8px 50px rgba(0, 0, 0, 0.6);
+  }
 }

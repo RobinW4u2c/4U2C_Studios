@@ -82,12 +82,12 @@ export default function PhotoWall() {
         ))}
       </div>
 
-      {/* Abdunkelung + Vignette für Lesbarkeit des Texts darüber */}
-      <div className="pointer-events-none absolute inset-0 bg-ink/72" />
+      {/* Abdunkelung + Vignette für cleane Lesbarkeit (matter) */}
+      <div className="pointer-events-none absolute inset-0 bg-ink/80" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink" />
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: 'radial-gradient(circle at center, transparent 30%, rgba(10,10,12,0.85) 100%)' }}
+        style={{ background: 'radial-gradient(circle at center, transparent 25%, rgba(10,10,12,0.92) 100%)' }}
       />
     </div>
   );
