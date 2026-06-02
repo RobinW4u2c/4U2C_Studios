@@ -91,7 +91,7 @@ export default function World({ isMobile }: WorldProps) {
 
       {/* Video-Screen in der Tiefe */}
       <Suspense fallback={null}>
-        {VIDEOS[0] && <VideoScreen src={VIDEOS[0].src} position={[0, 0, -18]} scale={2.6} />}
+        {VIDEOS[0] && <VideoScreen src={VIDEOS[0].src} position={[0, 0.5, -9]} scale={2.0} />}
       </Suspense>
 
       {/* ---- POSTPROCESSING (Glow statt Blitz) ---- */}
