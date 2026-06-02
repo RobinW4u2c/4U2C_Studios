@@ -111,8 +111,8 @@ export default function Contact() {
 
         {/* Erfolgsmeldung */}
         {status === 'success' ? (
-          <div className="rounded-sm border border-accent/40 bg-carbon p-12 text-center">
-            <h3 className="font-display text-3xl text-bone">Danke!</h3>
+          <div className="border-y border-accent/30 py-16 text-center">
+            <h3 className="font-display text-4xl text-bone">Danke!</h3>
             <p className="mt-4 font-body text-smoke">
               Deine Nachricht ist angekommen. Ich melde mich in Kürze.
             </p>

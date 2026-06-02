@@ -1,21 +1,23 @@
 'use client';
 
 // ============================================================
-//  CINEMATIC BACKGROUND v2 (Canvas, filmisch & lebendig)
-//  Kein generischer Glow. Stattdessen eine echte
-//  "Lichtsetzung am Set":
-//   - volumetrische Lichtkegel (god rays) aus der Tiefe
-//   - schwebende Tiefen-Partikel mit Parallax (3 Ebenen)
-//   - vertikale Film-Licht-Streifen, die langsam atmen
-//   - subtiles "Set-Haze" (Nebel)
-//  Reagiert auf Maus (Parallax) – wirkt lebendig, lenkt nicht ab.
-//  Reines Canvas2D = sehr performant, kein WebGL.
+//  CINEMATIC BACKGROUND v3 – "FOCUS FIELD"
+//  Komplett neues Konzept (kein Glow-Verlauf):
+//   - feines, perspektivisch fluchtendes RASTER (wie ein
+//     Kamera-Sucher-Grid / Mattscheibe) das langsam atmet
+//   - vertikale FILMSTREIFEN-Andeutung an den Rändern
+//   - wandernde FOKUS-Punkte (scharf->unscharf), wie ein
+//     Autofokus, der das Bild absucht
+//   - alles dunkel, kontrastreich, mit Brand-Akzent
+//   - reagiert auf Scroll (Grid verschiebt sich) + Maus
+//  Reines Canvas2D = performant.
 // ============================================================
 
 import { useEffect, useRef } from 'react';
 
 export default function CinematicBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const scrollRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -42,95 +44,118 @@ export default function CinematicBackground() {
     };
     window.addEventListener('mousemove', onMove);
 
-    // ---- Tiefen-Partikel (3 Ebenen für Parallax) ----
-    type P = { x: number; y: number; z: number; r: number; s: number };
-    const particles: P[] = [];
-    const COUNT = Math.min(90, Math.floor((w * h) / 22000));
-    for (let i = 0; i < COUNT; i++) {
-      particles.push({
-        x: Math.random(),
-        y: Math.random(),
-        z: Math.random() * 3 + 0.3,      // Tiefe (klein=fern)
-        r: Math.random() * 1.6 + 0.4,
-        s: Math.random() * 0.00008 + 0.00002,
-      });
-    }
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      scrollRef.current = max > 0 ? window.scrollY / max : 0;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-    // ---- Lichtkegel (god rays) ----
-    const cones = [
-      { x: 0.25, w: 0.10, hue: 'rgba(227,211,173,', sp: 0.00012, ph: 0 },
-      { x: 0.55, w: 0.16, hue: 'rgba(255,255,255,', sp: 0.00008, ph: 2 },
-      { x: 0.80, w: 0.08, hue: 'rgba(200,169,106,', sp: 0.00015, ph: 4 },
-    ];
+    // Fokus-Punkte, die das Bild "absuchen"
+    const focusPts = Array.from({ length: 5 }).map(() => ({
+      x: Math.random(), y: Math.random(),
+      tx: Math.random(), ty: Math.random(),
+      r: Math.random() * 40 + 30,
+    }));
 
-    let raf = 0;
-    let time = 0;
+    let raf = 0, time = 0;
 
     const draw = () => {
-      time += 1;
-      // Maus weich folgen
+      time += 0.005;
       cur.x += (mouse.x - cur.x) * 0.04;
       cur.y += (mouse.y - cur.y) * 0.04;
+      const scroll = scrollRef.current;
 
-      // Hintergrund: tiefer vertikaler Verlauf (Set-Schwarz)
-      const bg = ctx.createLinearGradient(0, 0, 0, h);
-      bg.addColorStop(0, '#0c0c12');
-      bg.addColorStop(0.5, '#08080c');
+      // Basis: tiefes, leicht bläuliches Schwarz (Kino-Dunkel)
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, '#08090d');
       bg.addColorStop(1, '#050507');
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
-      // ---- volumetrische Lichtkegel ----
+      // ---- PERSPEKTIVISCHES RASTER (Sucher-Grid) ----
+      // Fluchtpunkt leicht maus-/scroll-versetzt
+      const vpX = w * (0.5 + (cur.x - 0.5) * 0.3);
+      const vpY = h * (0.42 + (cur.y - 0.5) * 0.2 - scroll * 0.1);
+      ctx.lineWidth = 1;
+
+      const lines = 16;
+      // radiale Linien zum Fluchtpunkt
+      for (let i = 0; i <= lines; i++) {
+        const a = (i / lines) * Math.PI * 2;
+        const len = Math.max(w, h) * 1.2;
+        const x2 = vpX + Math.cos(a) * len;
+        const y2 = vpY + Math.sin(a) * len;
+        ctx.strokeStyle = 'rgba(200,169,106,0.035)';
+        ctx.beginPath();
+        ctx.moveTo(vpX, vpY);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+      // konzentrische Ringe, die mit Scroll nach außen wandern
+      for (let i = 0; i < 9; i++) {
+        const prog = ((i / 9) + scroll * 0.6 + time * 0.05) % 1;
+        const radius = prog * Math.max(w, h) * 0.7;
+        ctx.strokeStyle = `rgba(120,140,180,${(1 - prog) * 0.05})`;
+        ctx.beginPath();
+        ctx.arc(vpX, vpY, radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // ---- FILMSTREIFEN an den Rändern (Perforations-Andeutung) ----
+      const stripW = Math.min(46, w * 0.05);
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fillRect(0, 0, stripW, h);
+      ctx.fillRect(w - stripW, 0, stripW, h);
+      // Perforationslöcher, die mit Scroll nach oben laufen
+      const holeH = 22, gap = 38;
+      const offset = (scroll * h * 2 + time * 30) % gap;
+      ctx.fillStyle = 'rgba(200,169,106,0.06)';
+      for (let y = -gap + offset; y < h + gap; y += gap) {
+        ctx.fillRect(stripW * 0.3, y, stripW * 0.4, holeH);
+        ctx.fillRect(w - stripW * 0.7, y, stripW * 0.4, holeH);
+      }
+
+      // ---- AUTOFOKUS-PUNKTE (scharf -> weich) ----
       ctx.globalCompositeOperation = 'screen';
-      cones.forEach((c) => {
-        const breathe = 0.5 + 0.5 * Math.sin(time * c.sp * 1000 + c.ph);
-        const px = (c.x + (cur.x - 0.5) * 0.06) * w;   // Parallax mit Maus
-        const topW = c.w * w * 0.2;
-        const botW = c.w * w * 1.6;
-        const g = ctx.createLinearGradient(0, 0, 0, h);
-        const a = 0.05 + breathe * 0.06;
-        g.addColorStop(0, c.hue + a + ')');
-        g.addColorStop(0.6, c.hue + a * 0.4 + ')');
-        g.addColorStop(1, c.hue + '0)');
-        ctx.fillStyle = g;
+      focusPts.forEach((p, i) => {
+        // langsam zu neuen Zielen wandern
+        p.x += (p.tx - p.x) * 0.006;
+        p.y += (p.ty - p.y) * 0.006;
+        if (Math.abs(p.x - p.tx) < 0.01 && Math.abs(p.y - p.ty) < 0.01) {
+          p.tx = Math.random(); p.ty = Math.random();
+        }
+        const px = p.x * w, py = p.y * h;
+        const pulse = 0.5 + 0.5 * Math.sin(time * 2 + i);
+        // Fokus-Klammern (AF-Rahmen) statt Glow
+        const s = p.r * (0.8 + pulse * 0.3);
+        ctx.strokeStyle = `rgba(227,211,173,${0.04 + pulse * 0.05})`;
+        ctx.lineWidth = 1.5;
+        const corner = s * 0.3;
+        // vier Ecken eines AF-Rahmens
         ctx.beginPath();
-        ctx.moveTo(px - topW, -20);
-        ctx.lineTo(px + topW, -20);
-        ctx.lineTo(px + botW, h + 20);
-        ctx.lineTo(px - botW, h + 20);
-        ctx.closePath();
-        ctx.fill();
+        // TL
+        ctx.moveTo(px - s, py - s + corner); ctx.lineTo(px - s, py - s); ctx.lineTo(px - s + corner, py - s);
+        // TR
+        ctx.moveTo(px + s - corner, py - s); ctx.lineTo(px + s, py - s); ctx.lineTo(px + s, py - s + corner);
+        // BR
+        ctx.moveTo(px + s, py + s - corner); ctx.lineTo(px + s, py + s); ctx.lineTo(px + s - corner, py + s);
+        // BL
+        ctx.moveTo(px - s + corner, py + s); ctx.lineTo(px - s, py + s); ctx.lineTo(px - s, py + s - corner);
+        ctx.stroke();
       });
-
-      // ---- Tiefen-Partikel ----
-      particles.forEach((p) => {
-        // langsames Aufsteigen
-        p.y -= p.s * (4 - p.z) * 120;
-        if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); }
-        // Parallax nach Tiefe + Maus
-        const par = (cur.x - 0.5) * (0.04 * p.z);
-        const px = (p.x + par) * w;
-        const py = p.y * h;
-        const alpha = (0.12 + (3.3 - p.z) * 0.05);
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(227,211,173,${alpha})`;
-        ctx.arc(px, py, p.r * (1 / p.z), 0, Math.PI * 2);
-        ctx.fill();
-      });
-
       ctx.globalCompositeOperation = 'source-over';
 
-      // ---- Set-Haze unten (Nebel) ----
-      const haze = ctx.createLinearGradient(0, h * 0.5, 0, h);
-      haze.addColorStop(0, 'rgba(10,10,14,0)');
-      haze.addColorStop(1, 'rgba(12,12,18,0.55)');
+      // ---- Set-Haze unten + Vignette ----
+      const haze = ctx.createLinearGradient(0, h * 0.55, 0, h);
+      haze.addColorStop(0, 'rgba(8,9,13,0)');
+      haze.addColorStop(1, 'rgba(8,9,13,0.6)');
       ctx.fillStyle = haze;
-      ctx.fillRect(0, h * 0.5, w, h * 0.5);
+      ctx.fillRect(0, h * 0.55, w, h * 0.45);
 
-      // ---- Vignette ----
-      const vig = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.3, w / 2, h / 2, Math.max(w, h) * 0.75);
+      const vig = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.32, w / 2, h / 2, Math.max(w, h) * 0.78);
       vig.addColorStop(0, 'rgba(0,0,0,0)');
-      vig.addColorStop(1, 'rgba(4,4,6,0.8)');
+      vig.addColorStop(1, 'rgba(4,4,6,0.82)');
       ctx.fillStyle = vig;
       ctx.fillRect(0, 0, w, h);
 
@@ -141,6 +166,7 @@ export default function CinematicBackground() {
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(raf);
     };
   }, []);

@@ -17,6 +17,7 @@ import Cursor from '@/components/ui/Cursor';
 import Grain from '@/components/ui/Grain';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import CinematicBackground from '@/components/ui/CinematicBackground';
+import ScrollPhotoLayer from '@/components/ui/ScrollPhotoLayer';
 
 import Hero from '@/components/sections/Hero';
 import FloatingGallery from '@/components/sections/FloatingGallery';
@@ -52,6 +53,9 @@ export default function Page() {
 
       {/* Inhalte über der 3D-Welt */}
       <main className="relative">
+        {/* Scroll-gekoppelte Hintergrundbilder (über ganze Höhe) */}
+        <ScrollPhotoLayer />
+
         <Hero />
         <FloatingGallery />
         <BeforeAfter />
