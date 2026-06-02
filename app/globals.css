@@ -1,7 +1,6 @@
 /* ============================================================
-   GLOBAL STYLES – 4U2C STUDIOS
-   Fonts via Google Fonts (siehe layout.tsx next/font), hier
-   Basis-Reset, CSS-Variablen und wiederkehrende Utility-Klassen.
+   GLOBAL STYLES v2 – 4U2C STUDIOS
+   Mutig, modern, editorial. Klare Flächen, harte Kontraste.
    ============================================================ */
 
 @tailwind base;
@@ -9,140 +8,66 @@
 @tailwind utilities;
 
 :root {
-  /* Premium-Palette – höhere Lesbarkeit (hellerer Text) */
-  --ink: #08080b;        /* tieferes Schwarz */
-  --carbon: #101015;
-  --ash: #20202a;
-  --smoke: #a8a8b2;      /* heller als zuvor -> besser lesbar */
-  --bone: #f4f1ea;       /* wärmeres, helleres Weiß */
-  --accent: #d4b074;     /* etwas leuchtenderes Gold */
+  --void: #050505;
+  --coal: #0e0e0e;
+  --line: #262626;
+  --mute: #7d7d7d;
+  --chalk: #f5f5f0;
+  --volt: #d6ff3f;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html {
-  /* native Smooth-Scroll AUS – wir nutzen Lenis */
   scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  background-color: var(--ink);
-  color: var(--bone);
+  background-color: var(--void);
+  color: var(--chalk);
   font-family: var(--font-body), sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
-  /* Custom Cursor: Standard-Cursor ausblenden auf Desktop */
 }
 
+/* Custom Cursor nur auf Desktop */
 @media (hover: hover) and (pointer: fine) {
-  body {
-    cursor: none;
-  }
-  a, button {
-    cursor: none;
-  }
+  body, a, button { cursor: none; }
 }
 
-/* Scrollbar dezent stylen */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--ink);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--ash);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
+::selection { background: var(--volt); color: var(--void); }
 
-/* Text-Selektion */
-::selection {
-  background: var(--accent);
-  color: var(--ink);
-}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: var(--line); }
+::-webkit-scrollbar-thumb:hover { background: var(--volt); }
 
-/* ----- Keyframes für die driftende Bilderwand ----- */
-@keyframes driftUp {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-33.33%); } /* eine der 3 Kopien durchlaufen = nahtlos */
-}
-@keyframes driftDown {
-  0%   { transform: translateY(-33.33%); }
-  100% { transform: translateY(0); }
-}
-
-/* ----- Light Sweep Pulsieren (cinematic Hintergrund) ----- */
-@keyframes sweepPulse {
-  0%, 100% { opacity: 0.03; }
-  50%      { opacity: 0.10; }
-}
-
-/* ----- Ken-Burns Slow-Zoom Varianten (Galerie) ----- */
-@keyframes kenburns0 {
-  0%   { transform: scale(1.0) translate(0, 0); }
-  100% { transform: scale(1.12) translate(-2%, -2%); }
-}
-@keyframes kenburns1 {
-  0%   { transform: scale(1.08) translate(1%, -1%); }
-  100% { transform: scale(1.0) translate(0, 0); }
-}
-@keyframes kenburns2 {
-  0%   { transform: scale(1.0) translate(0, 1%); }
-  100% { transform: scale(1.14) translate(2%, -2%); }
-}
-
-/* ----- Wiederkehrende Komponenten-Klassen ----- */
 @layer components {
-  /* Einheitliches Eingabefeld-Styling (Kontaktformular) */
-  .cine-input {
-    @apply w-full border-b border-ash bg-transparent py-3 font-body text-bone
-           placeholder:text-smoke/50 outline-none transition-colors duration-300
-           focus:border-accent;
+  /* Eingabefeld – klare Linie */
+  .field {
+    @apply w-full border-0 border-b-2 border-line bg-transparent py-4 font-body text-lg text-chalk
+           placeholder:text-mute/60 outline-none transition-colors duration-300 focus:border-volt;
+  }
+  select.field { @apply cursor-pointer; }
+
+  /* großer Akzent-Button */
+  .btn-volt {
+    @apply inline-flex items-center justify-center bg-volt px-8 py-4 font-mono text-sm font-semibold
+           uppercase tracking-widest2 text-void transition-all duration-300 ease-snap
+           hover:bg-chalk;
   }
 
-  select.cine-input {
-    @apply cursor-pointer;
+  /* Sektions-Nummer / Eyebrow */
+  .tag {
+    @apply font-mono text-xs uppercase tracking-widest2 text-volt;
   }
 
-  /* Lesbarkeit: feiner Schatten hinter Text auf bewegtem Hintergrund */
-  .readable {
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.6);
-  }
-
-  /* dezenter dunkler Backdrop-Streifen hinter Textblöcken (Lesbarkeit) */
-  .text-veil {
-    position: relative;
-  }
-  .text-veil::before {
-    content: '';
-    position: absolute;
-    inset: -2rem -3rem;
-    background: radial-gradient(ellipse at center, rgba(8, 8, 11, 0.72) 0%, transparent 72%);
-    z-index: -1;
-    pointer-events: none;
-  }
-
-  /* Matter Look mit leuchtender Gold-Kontur (für Cards/Buttons) */
-  .glow-border {
-    position: relative;
-    border: 1px solid rgba(212, 176, 116, 0.18);
-    box-shadow: 0 0 0 1px rgba(212, 176, 116, 0.04), 0 8px 40px rgba(0, 0, 0, 0.5);
-    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
-  }
-  .glow-border:hover {
-    border-color: rgba(212, 176, 116, 0.55);
-    box-shadow: 0 0 28px rgba(212, 176, 116, 0.2), 0 8px 50px rgba(0, 0, 0, 0.6);
-  }
-
-  /* Sektions-Label (kleine nummerierte Überschrift) */
-  .eyebrow {
-    @apply font-mono text-xs uppercase tracking-widest2 text-accent;
+  /* Outline-Text-Effekt für große Headlines (modern) */
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--chalk);
   }
 }
