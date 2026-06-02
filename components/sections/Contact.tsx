@@ -12,6 +12,7 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { SITE, PROJECT_TYPES, BUDGET_RANGES } from '@/lib/data';
+import FinaleBackground from '@/components/ui/FinaleBackground';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
@@ -84,10 +85,11 @@ export default function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      className="relative z-10 mx-auto max-w-[1100px] px-6 py-32 md:px-12"
-    >
+    <section id="contact" className="relative z-10 overflow-hidden py-40">
+      {/* SPEKTAKULÄRES FINALE: Light Tunnel hinter der Section (full-bleed) */}
+      <FinaleBackground />
+
+      <div className="relative mx-auto max-w-[1100px] px-6 md:px-12">
       <motion.div
         ref={formRef}
         initial={{ opacity: 0, y: 60 }}
@@ -202,6 +204,7 @@ export default function Contact() {
           </div>
         )}
       </motion.div>
+      </div>
     </section>
   );
 }

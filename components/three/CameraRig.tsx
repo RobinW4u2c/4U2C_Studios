@@ -17,11 +17,11 @@ import { lerp } from '@/lib/utils';
 // Wegpunkte der Kamera (z-Tiefe nimmt zu = Flug nach vorne/hinten).
 // Jeder Eintrag: Position + Blickziel (lookAt).
 const WAYPOINTS: { pos: THREE.Vector3; look: THREE.Vector3 }[] = [
-  { pos: new THREE.Vector3(0, 0, 8), look: new THREE.Vector3(0, 0, -5) },
-  { pos: new THREE.Vector3(-1.5, 0.5, 0), look: new THREE.Vector3(0, 0, -10) },
-  { pos: new THREE.Vector3(1.2, -0.4, -6), look: new THREE.Vector3(0, 0, -16) },
-  { pos: new THREE.Vector3(0, 0.6, -12), look: new THREE.Vector3(0, 0, -22) },
-  { pos: new THREE.Vector3(0, 0, -20), look: new THREE.Vector3(0, 0, -30) },
+  { pos: new THREE.Vector3(0, 0, 6), look: new THREE.Vector3(0, 0, -1) },
+  { pos: new THREE.Vector3(-0.6, 0.3, 5.4), look: new THREE.Vector3(0, 0, -1.5) },
+  { pos: new THREE.Vector3(0.7, -0.2, 5.0), look: new THREE.Vector3(0, -0.2, -2) },
+  { pos: new THREE.Vector3(-0.3, 0.4, 4.8), look: new THREE.Vector3(0, 0.1, -1.5) },
+  { pos: new THREE.Vector3(0, 0, 4.2), look: new THREE.Vector3(0, 0, -0.5) },
 ];
 
 // interpoliert zwischen den Wegpunkten anhand t (0..1)

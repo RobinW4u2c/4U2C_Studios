@@ -87,10 +87,10 @@ export default function FinaleBackground() {
 
       ctx.globalCompositeOperation = 'source-over';
 
-      // Vignette dezenter, damit das Formular luftig wirkt (kein dunkler Kasten)
-      const vig = ctx.createRadialGradient(cx, cy, Math.min(w, h) * 0.35, cx, cy, Math.max(w, h) * 0.8);
+      // Vignette, damit Ränder ins Dunkle laufen
+      const vig = ctx.createRadialGradient(cx, cy, Math.min(w, h) * 0.25, cx, cy, Math.max(w, h) * 0.7);
       vig.addColorStop(0, 'rgba(0,0,0,0)');
-      vig.addColorStop(1, 'rgba(6,6,8,0.55)');
+      vig.addColorStop(1, 'rgba(6,6,8,0.92)');
       ctx.fillStyle = vig;
       ctx.fillRect(0, 0, w, h);
 
