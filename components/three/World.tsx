@@ -16,6 +16,8 @@ import LightBeams from './LightBeams';
 import Particles from './Particles';
 import FloatingPhoto from './FloatingPhoto';
 import VideoScreen from './VideoScreen';
+import FlyingCamera from './FlyingCamera';
+import { triggerShutterFlash } from '@/components/ui/ShutterFlash';
 import { HERO_PHOTOS, VIDEOS } from '@/lib/data';
 
 interface WorldProps {
@@ -25,9 +27,9 @@ interface WorldProps {
 export default function World({ isMobile }: WorldProps) {
   return (
     <>
-      {/* Nebel: blendet die Tiefe ins Dunkle aus (Atmosphäre) */}
-      <fog attach="fog" args={['#0a0a0c', 6, 32]} />
-      <color attach="background" args={['#0a0a0c']} />
+      {/* Nebel: blendet die Tiefe ins Dunkle aus. Kein opaker
+          Background mehr -> driftende Bilderwand bleibt sichtbar. */}
+      <fog attach="fog" args={['#0a0a0c', 8, 34]} />
 
       {/* Kamera-Steuerung */}
       <CameraRig />
@@ -37,6 +39,10 @@ export default function World({ isMobile }: WorldProps) {
 
       {/* Partikel – auf Mobile reduzierte Anzahl für Performance */}
       <Particles count={isMobile ? 400 : 1400} color="#c8a96a" />
+
+      {/* FLIEGENDE KAMERA (Sony Alpha) – löst beim Vorbeiflug den Blitz aus.
+          Auf Mobile aus Performance-Gründen weggelassen. */}
+      {!isMobile && <FlyingCamera onFlash={triggerShutterFlash} />}
 
       {/* Schwebende Fotos (lädt Texturen; Suspense fängt Ladezeit ab) */}
       <Suspense fallback={null}>

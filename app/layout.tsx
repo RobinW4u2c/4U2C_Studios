@@ -1,19 +1,21 @@
 // ============================================================
 //  ROOT LAYOUT
-//  Lädt Fonts (Display: Cormorant Garamond, Body: Manrope,
+//  Lädt Fonts (Display: Bricolage Grotesque, Body: Manrope,
 //  Mono: JetBrains Mono) und globale Styles. Setzt Metadata
 //  für SEO / Social Sharing.
 // ============================================================
 
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Manrope, JetBrains_Mono } from 'next/font/google';
+import { Bricolage_Grotesque, Manrope, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { SITE } from '@/lib/data';
 
-// --- Fonts (selbst-hostend via next/font, kein FOUT) ----------
-const display = Cormorant_Garamond({
+// --- Fonts (serifenlos) --------------------------------------
+// Display: Bricolage Grotesque (charaktervolle, moderne Sans)
+// Body: Manrope · Mono: JetBrains Mono
+const display = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-display',
   display: 'swap',
 });

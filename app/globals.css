@@ -68,6 +68,16 @@ body {
   color: var(--ink);
 }
 
+/* ----- Keyframes für die driftende Bilderwand ----- */
+@keyframes driftUp {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-33.33%); } /* eine der 3 Kopien durchlaufen = nahtlos */
+}
+@keyframes driftDown {
+  0%   { transform: translateY(-33.33%); }
+  100% { transform: translateY(0); }
+}
+
 /* ----- Wiederkehrende Komponenten-Klassen ----- */
 @layer components {
   /* Einheitliches Eingabefeld-Styling (Kontaktformular) */

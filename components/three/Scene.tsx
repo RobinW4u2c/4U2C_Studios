@@ -31,12 +31,12 @@ export default function Scene() {
       dpr={mobile ? [1, 1.5] : [1, 2]}
       gl={{
         antialias: true,
-        alpha: false,
+        alpha: true,
         powerPreference: 'high-performance',
       }}
       // Frameloop läuft immer (Animationen brauchen das)
       frameloop="always"
-      style={{ position: 'fixed', inset: 0, zIndex: 0 }}
+      style={{ position: 'fixed', inset: 0, zIndex: 2 }}
     >
       <World isMobile={mobile} />
     </Canvas>

@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SITE } from '@/lib/data';
+import SplitText from '@/components/ui/SplitText';
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -65,15 +66,15 @@ export default function Hero() {
 
         <motion.h1
           variants={item}
-          className="font-display text-[14vw] leading-[0.85] tracking-tightest text-bone md:text-[9vw]"
+          className="font-display text-[14vw] font-extrabold leading-[0.85] tracking-tightest text-bone md:text-[9vw]"
         >
-          CINEMATIC
+          <SplitText text="CINEMATIC" by="char" delay={2.7} stagger={0.04} />
         </motion.h1>
         <motion.h1
           variants={item}
-          className="font-display text-[14vw] leading-[0.85] tracking-tightest text-bone md:text-[9vw]"
+          className="font-display text-[14vw] font-extrabold leading-[0.85] tracking-tightest text-accent md:text-[9vw]"
         >
-          STORIES
+          <SplitText text="STORIES" by="char" delay={3.0} stagger={0.04} />
         </motion.h1>
 
         <motion.p
