@@ -58,7 +58,7 @@ export default function About() {
     <section
       ref={section}
       id="about"
-      className="relative z-10 mx-auto max-w-[1600px] px-6 py-32 md:px-12"
+      className="relative z-10 mx-auto max-w-[1600px] px-6 py-40 md:px-12"
     >
       <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
         {/* Porträt */}
@@ -89,13 +89,13 @@ export default function About() {
           <span className="font-mono text-xs uppercase tracking-widest2 text-accent">
             04 — About
           </span>
-          <h2 className="about-line mt-4 font-display text-5xl tracking-tightest text-bone md:text-7xl">
+          <h2 className="about-line readable mt-4 font-display text-5xl font-bold tracking-tightest text-bone md:text-7xl">
             {ABOUT.heading}
           </h2>
 
           <div className="mt-10 space-y-6">
             {ABOUT.paragraphs.map((p, i) => (
-              <p key={i} className="about-line max-w-xl font-body leading-relaxed text-smoke">
+              <p key={i} className="about-line max-w-xl font-body text-lg leading-relaxed text-bone/80">
                 {p}
               </p>
             ))}

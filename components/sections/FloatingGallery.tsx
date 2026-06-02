@@ -93,17 +93,17 @@ export default function FloatingGallery() {
     <section
       ref={section}
       id="work"
-      className="relative z-10 mx-auto min-h-screen max-w-[1600px] px-6 py-32 md:px-12"
+      className="relative z-10 mx-auto min-h-screen max-w-[1600px] px-6 py-40 md:px-12"
     >
       {/* Section Header */}
       <div className="mb-20 flex items-end justify-between">
         <div>
           <span className="font-mono text-xs uppercase tracking-widest2 text-accent">01 — Work</span>
-          <h2 className="mt-4 font-display text-5xl tracking-tightest text-bone md:text-7xl">
+          <h2 className="readable mt-4 font-display text-5xl font-bold tracking-tightest text-bone md:text-7xl">
             Selected Frames
           </h2>
         </div>
-        <span className="hidden font-mono text-xs text-smoke md:block">
+        <span className="readable hidden font-mono text-xs text-bone/60 md:block">
           Move your cursor — the gallery responds.
         </span>
       </div>

@@ -18,6 +18,7 @@ import Grain from '@/components/ui/Grain';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import CinematicBackground from '@/components/ui/CinematicBackground';
 import ScrollPhotoLayer from '@/components/ui/ScrollPhotoLayer';
+import PageFrame from '@/components/ui/PageFrame';
 
 import Hero from '@/components/sections/Hero';
 import FloatingGallery from '@/components/sections/FloatingGallery';
@@ -44,6 +45,7 @@ export default function Page() {
       <Grain />
       <ScrollProgress />
       <Navbar />
+      <PageFrame />
 
       {/* Cinematic Atmosphäre-Hintergrund (z-1) */}
       <CinematicBackground />

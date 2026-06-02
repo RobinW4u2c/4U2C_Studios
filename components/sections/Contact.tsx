@@ -101,7 +101,7 @@ export default function Contact() {
           <span className="font-mono text-xs uppercase tracking-widest2 text-accent">
             05 — Contact
           </span>
-          <h2 className="mt-4 font-display text-5xl tracking-tightest text-bone md:text-7xl">
+          <h2 className="readable mt-4 font-display text-5xl font-bold tracking-tightest text-bone md:text-7xl">
             Let&apos;s create
           </h2>
           <p className="mt-6 font-body text-smoke">

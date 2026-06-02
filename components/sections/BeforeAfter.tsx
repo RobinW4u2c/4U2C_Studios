@@ -75,13 +75,13 @@ export default function BeforeAfter() {
   return (
     <section
       ref={section}
-      className="relative z-10 mx-auto max-w-[1400px] px-6 py-32 md:px-12"
+      className="relative z-10 mx-auto max-w-[1400px] px-6 py-40 md:px-12"
     >
       <div className="ba-reveal mb-16 text-center">
         <span className="font-mono text-xs uppercase tracking-widest2 text-accent">
           02 — {BEFORE_AFTER.subtitle}
         </span>
-        <h2 className="mt-4 font-display text-5xl tracking-tightest text-bone md:text-7xl">
+        <h2 className="readable mt-4 font-display text-5xl font-bold tracking-tightest text-bone md:text-7xl">
           {BEFORE_AFTER.title}
         </h2>
       </div>

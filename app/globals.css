@@ -9,13 +9,13 @@
 @tailwind utilities;
 
 :root {
-  /* Farb-Variablen (für Stellen, die kein Tailwind nutzen, z.B. Cursor) */
-  --ink: #0a0a0c;
-  --carbon: #121216;
-  --ash: #1c1c22;
-  --smoke: #8a8a93;
-  --bone: #ece8e1;
-  --accent: #c8a96a;
+  /* Premium-Palette – höhere Lesbarkeit (hellerer Text) */
+  --ink: #08080b;        /* tieferes Schwarz */
+  --carbon: #101015;
+  --ash: #20202a;
+  --smoke: #a8a8b2;      /* heller als zuvor -> besser lesbar */
+  --bone: #f4f1ea;       /* wärmeres, helleres Weiß */
+  --accent: #d4b074;     /* etwas leuchtenderes Gold */
 }
 
 * {
@@ -76,11 +76,13 @@ body {
 @keyframes driftDown {
   0%   { transform: translateY(-33.33%); }
   100% { transform: translateY(0); }
+}
 
 /* ----- Light Sweep Pulsieren (cinematic Hintergrund) ----- */
 @keyframes sweepPulse {
   0%, 100% { opacity: 0.03; }
   50%      { opacity: 0.10; }
+}
 
 /* ----- Ken-Burns Slow-Zoom Varianten (Galerie) ----- */
 @keyframes kenburns0 {
@@ -96,10 +98,6 @@ body {
   100% { transform: scale(1.14) translate(2%, -2%); }
 }
 
-}
-
-}
-
 /* ----- Wiederkehrende Komponenten-Klassen ----- */
 @layer components {
   /* Einheitliches Eingabefeld-Styling (Kontaktformular) */
@@ -113,16 +111,38 @@ body {
     @apply cursor-pointer;
   }
 
+  /* Lesbarkeit: feiner Schatten hinter Text auf bewegtem Hintergrund */
+  .readable {
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  /* dezenter dunkler Backdrop-Streifen hinter Textblöcken (Lesbarkeit) */
+  .text-veil {
+    position: relative;
+  }
+  .text-veil::before {
+    content: '';
+    position: absolute;
+    inset: -2rem -3rem;
+    background: radial-gradient(ellipse at center, rgba(8, 8, 11, 0.72) 0%, transparent 72%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
   /* Matter Look mit leuchtender Gold-Kontur (für Cards/Buttons) */
   .glow-border {
     position: relative;
-    border: 1px solid rgba(200, 169, 106, 0.18);
-    box-shadow: 0 0 0 1px rgba(200, 169, 106, 0.04), 0 8px 40px rgba(0, 0, 0, 0.5);
-    transition: border-color 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
-                box-shadow 0.5s ease;
+    border: 1px solid rgba(212, 176, 116, 0.18);
+    box-shadow: 0 0 0 1px rgba(212, 176, 116, 0.04), 0 8px 40px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
   }
   .glow-border:hover {
-    border-color: rgba(200, 169, 106, 0.55);
-    box-shadow: 0 0 24px rgba(200, 169, 106, 0.18), 0 8px 50px rgba(0, 0, 0, 0.6);
+    border-color: rgba(212, 176, 116, 0.55);
+    box-shadow: 0 0 28px rgba(212, 176, 116, 0.2), 0 8px 50px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Sektions-Label (kleine nummerierte Überschrift) */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-widest2 text-accent;
   }
 }
