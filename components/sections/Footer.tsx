@@ -55,6 +55,12 @@ export default function Footer() {
             </a>
           </div>
         </div>
+
+        {/* 3D-Modell Credit – PFLICHT bei CC-BY Lizenz (nicht entfernen) */}
+        <p className="mt-6 font-mono text-[9px] leading-relaxed text-smoke/60">
+          3D-Blende basiert auf &laquo;Lens Diaphragm&raquo; von jvvince (Sketchfab),
+          lizenziert unter CC-BY-4.0.
+        </p>
       </div>
     </footer>
   );

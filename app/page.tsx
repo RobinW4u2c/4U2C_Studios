@@ -17,7 +17,6 @@ import Cursor from '@/components/ui/Cursor';
 import Grain from '@/components/ui/Grain';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import PhotoWall from '@/components/ui/PhotoWall';
-import ShutterFlash from '@/components/ui/ShutterFlash';
 
 import Hero from '@/components/sections/Hero';
 import FloatingGallery from '@/components/sections/FloatingGallery';
@@ -42,7 +41,6 @@ export default function Page() {
       {/* globale Overlays */}
       <Cursor />
       <Grain />
-      <ShutterFlash />
       <ScrollProgress />
       <Navbar />
 
