@@ -21,15 +21,40 @@ export default function FloatingGallery() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1) Scroll-Reveal der Karten
+    // 1) Cinematic Reveal: Karten enthüllen sich via Clip-Path + Scale
     const ctx = gsap.context(() => {
-      gsap.from('.gal-card', {
-        opacity: 0,
-        y: 80,
-        duration: 1.1,
-        ease: 'power3.out',
-        stagger: 0.12,
-        scrollTrigger: { trigger: section.current, start: 'top 70%' },
+      gsap.utils.toArray<HTMLElement>('.gal-card').forEach((card, i) => {
+        gsap.fromTo(
+          card,
+          {
+            opacity: 0,
+            y: 90,
+            scale: 0.92,
+            clipPath: 'inset(12% 12% 12% 12% round 4px)',
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            clipPath: 'inset(0% 0% 0% 0% round 4px)',
+            duration: 1.3,
+            ease: 'power3.out',
+            delay: (i % 3) * 0.1,
+            scrollTrigger: { trigger: card, start: 'top 88%' },
+          }
+        );
+
+        // 2) Scroll-basierte Tiefen-Parallax je Karte (Depth Layers)
+        gsap.to(card, {
+          yPercent: -8 - (i % 3) * 6,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
       });
     }, section);
 
@@ -117,24 +142,33 @@ function GalleryCard({
       data-cursor="hover"
       style={{ marginTop: index % 2 === 1 ? '3rem' : '0' }}
     >
-      {/* Bild oder eleganter Platzhalter */}
+      {/* Bild oder eleganter Platzhalter – mit Ken-Burns Slow-Zoom */}
       {!error ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src}
-          alt={title}
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
-          onError={() => setError(true)}
-          className={`h-full w-full object-cover transition-all duration-700 ease-cine group-hover:scale-105 ${
-            loaded ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
+        <div className="h-full w-full overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={title}
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+            onError={() => setError(true)}
+            className={`h-full w-full object-cover transition-opacity duration-1000 ease-cine group-hover:[animation-play-state:paused] ${
+              loaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{
+              // Ken-Burns: extrem langsamer, gemächlicher Zoom/Pan
+              animation: `kenburns${index % 3} ${22 + (index % 3) * 4}s ease-in-out infinite alternate`,
+            }}
+          />
+        </div>
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-ash to-carbon">
           <span className="font-display text-2xl tracking-tightest text-smoke/40">{title}</span>
         </div>
       )}
+
+      {/* cinematic Glow-Sweep beim Hover (Lichtreflexion statt Lens Flare) */}
+      <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accentSoft/15 to-transparent transition-transform duration-1000 ease-cine group-hover:translate-x-full" />
 
       {/* Overlay-Infos */}
       <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-ink/90 to-transparent p-5 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
